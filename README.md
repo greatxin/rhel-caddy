@@ -21,21 +21,21 @@ This image builder can be deployed using the following YAML:
       apiVersion: v1
       metadata:
         labels:
-          app: rhel7-java-180-oracle
-        name: rhel7-java-180-oracle
+          app: rhel7-caddy
+        name: rhel7-caddy
       spec: {}
 
     - kind: BuildConfig
       apiVersion: v1
       metadata:
         labels:
-          app: rhel7-java-180-oracle
-        name: rhel7-java-180-oracle
+          app: rhel7-caddy
+        name: rhel7-caddy
       spec:
         output:
           to:
             kind: ImageStreamTag
-            name: rhel7-java-180-oracle:latest
+            name: rhel7-caddy:v0.10.4
         source:
           type: Git
           git:
