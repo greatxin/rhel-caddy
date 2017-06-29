@@ -1,5 +1,5 @@
-# rhel-caddy
-OpenShift container for Caddy based on RHEL
+# RHEL7 with Caddy server v0.10.4
+This Dockerfile provides a basic RHEL7 OpenShift image with Caddy Server installed.
 # Deploying this Application within OpenShift
 This image builder can be deployed using the following YAML:
     kind: List
