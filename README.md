@@ -50,3 +50,14 @@ This image builder can be deployed using the following YAML:
         - type: ConfigChange
         - type: ImageChange
           imageChange: {}
+    - kind: Route
+      apiVersion: v1
+      metadata:
+        name: rhel7-caddy-route
+      spec:
+        to:
+          kind: Service
+          name: rhel7-caddy
+          weight: 100
+        port:
+          targetPort: 2015-tcp
