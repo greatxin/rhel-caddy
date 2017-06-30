@@ -2,6 +2,7 @@
 This Dockerfile provides a basic RHEL7 OpenShift image with Caddy Server installed.
 # Deploying this Application within OpenShift
 This image builder can be deployed using the following YAML:
+
     kind: List
     apiVersion: v1
     items:
@@ -64,7 +65,7 @@ This image builder can be deployed using the following YAML:
     - kind: Service
       apiVersion: v1
       metadata:
-        name: rhel7-caddy-svc
+        name: rhel7-caddy
         labels:
           app: rhel7-caddy
       spec:
