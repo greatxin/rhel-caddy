@@ -61,3 +61,19 @@ This image builder can be deployed using the following YAML:
           weight: 100
         port:
           targetPort: 2015-tcp
+    - kind: Service
+      apiVersion: v1
+      metadata:
+        name: rhel7-caddy-svc
+        labels:
+          app: rhel7-caddy
+      spec:
+        ports:
+        - name: 2015-tcp
+          protocol: TCP
+          port: 2015
+          targetPort: 2015
+      selector:
+        deploymentconfig: rhel7-caddy
+        type: ClusterIP
+        sessionAffinity: None
