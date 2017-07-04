@@ -54,11 +54,11 @@ This image builder can be deployed using the following YAML:
     - kind: Route
       apiVersion: v1
       metadata:
-        name: rhel7-caddy-route
+        name: rhel-caddy
       spec:
         to:
           kind: Service
-          name: rhel7-caddy
+          name: caddy
           weight: 100
         port:
           targetPort: 2015-tcp
