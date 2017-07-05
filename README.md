@@ -104,7 +104,6 @@ This image builder can be deployed using the following YAML:
                 - rhel7-caddy
               from:
                 kind: ImageStreamTag
-                namespace: caddy
                 name: 'rhel7-caddy:v0.10.4'
         replicas: 1
         test: false
