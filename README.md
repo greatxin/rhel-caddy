@@ -11,6 +11,7 @@ Check if the caddy pod is runnig with the command
     oc get pod -w
     
 until a pod with the name rhel7-caddy-1-xxxxx is running.
+
 You can copy your files to the server with
 
     oc cp myfile rhel7-caddy-1-xxxxx:.
