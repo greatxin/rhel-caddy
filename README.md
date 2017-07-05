@@ -1,146 +1,20 @@
 # RHEL7 with Caddy server v0.10.4
 This Dockerfile provides a basic RHEL7 OpenShift image with Caddy Server installed.
 # Deploying this Application within OpenShift
-This image builder can be deployed using the following YAML:
+This Caddy server can be deployed using the following YAML:
 
-    kind: List
-    apiVersion: v1
-    items:
+    oc new-project caddy
+    oc create -f https://raw.githubusercontent.com/rbaumgar/rhel-caddy/master/caddy.yaml
 
-    - kind: ImageStream
-      apiVersion: v1
-      metadata:
-        name: rhel7
-      spec:
-        tags:
-        - from:
-            kind: DockerImage
-            name: registry.access.redhat.com/rhel7:latest
-          name: latest
+Check if the caddy pod is runnig with the command
 
-    - kind: ImageStream
-      apiVersion: v1
-      metadata:
-        labels:
-          app: rhel7-caddy
-        name: rhel7-caddy
-      spec: {}
+    oc get pod -w
+    
+until a pod with the name rhel7-caddy-1-xxxxx is running.
+You can copy your files to the server with
 
-    - kind: BuildConfig
-      apiVersion: v1
-      metadata:
-        labels:
-          app: rhel7-caddy
-        name: rhel7-caddy
-      spec:
-        output:
-          to:
-            kind: ImageStreamTag
-            name: rhel7-caddy:v0.10.4
-        source:
-          type: Git
-          git:
-            uri: https://github.com/rbaumgar/rhel-caddy.git
-        strategy:
-          dockerStrategy:
-            from:
-              kind: ImageStreamTag
-              name: rhel7:latest
-          type: Docker
-        triggers:
-        - type: ConfigChange
-        - type: ImageChange
-          imageChange: {}
-    - kind: Route
-      apiVersion: v1
-      metadata:
-        name: caddy
-      spec:
-        to:
-          kind: Service
-          name: caddy
-          weight: 100
-        port:
-          targetPort: 2015-tcp
-    - kind: Service
-      apiVersion: v1
-      metadata:
-        name: caddy
-        labels:
-          app: rhel7-caddy
-      spec:
-        ports:
-        - name: 2015-tcp
-          protocol: TCP
-          port: 2015
-          targetPort: 2015
-        selector:
-          deploymentconfig: rhel7-caddy
-        type: ClusterIP
-        sessionAffinity: None
-    - apiVersion: v1
-      kind: DeploymentConfig
-      metadata:
-        name: rhel7-caddy
-        labels:
-          app: rhel7-caddy
-      spec:
-        strategy:
-          type: Rolling
-          rollingParams:
-            updatePeriodSeconds: 1
-            intervalSeconds: 1
-            timeoutSeconds: 600
-            maxUnavailable: 25%
-            maxSurge: 25%
-          resources: {}
-          activeDeadlineSeconds: 21600
-        triggers:
-          - type: ConfigChange
-          - type: ImageChange
-            imageChangeParams:
-              automatic: true
-              containerNames:
-                - rhel7-caddy
-              from:
-                kind: ImageStreamTag
-                name: 'rhel7-caddy:v0.10.4'
-        replicas: 1
-        test: false
-        selector:
-          app: rhel7-caddy
-          deploymentconfig: rhel7-caddy
-        template:
-          metadata:
-            labels:
-              app: rhel7-caddy
-              deploymentconfig: rhel7-caddy
-          spec:
-            volumes:
-              - name: rhel7-caddy-1
-                emptyDir: {}
-            containers:
-              - name: rhel7-caddy
-                ports:
-                  - containerPort: 2015
-                    protocol: TCP
-                resources: {}
-                volumeMounts:
-                  - name: rhel7-caddy-1
-                    mountPath: /root/.caddy
-                readinessProbe:
-                  httpGet:
-                    path: /
-                    port: 2015
-                    scheme: HTTP
-                  initialDelaySeconds: 10
-                  timeoutSeconds: 3
-                  periodSeconds: 10
-                  successThreshold: 1
-                  failureThreshold: 3
-                terminationMessagePath: /dev/termination-log
-                imagePullPolicy: Always
-            restartPolicy: Always
-            terminationGracePeriodSeconds: 30
-            dnsPolicy: ClusterFirst
-            securityContext: {}
+    oc cp myfile rhel7-caddy-1-xxxxx:.
+    
+Access the caddy server in your browser. The URL is available with the following command under HOST/PORT
+
+    oc get route caddy
