@@ -54,7 +54,7 @@ This image builder can be deployed using the following YAML:
     - kind: Route
       apiVersion: v1
       metadata:
-        name: rhel-caddy
+        name: caddy
       spec:
         to:
           kind: Service
@@ -65,7 +65,7 @@ This image builder can be deployed using the following YAML:
     - kind: Service
       apiVersion: v1
       metadata:
-        name: rhel7-caddy
+        name: caddy
         labels:
           app: rhel7-caddy
       spec:
