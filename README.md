@@ -74,7 +74,75 @@ This image builder can be deployed using the following YAML:
           protocol: TCP
           port: 2015
           targetPort: 2015
-      selector:
-        deploymentconfig: rhel7-caddy
+        selector:
+          deploymentconfig: rhel7-caddy
         type: ClusterIP
         sessionAffinity: None
+    - apiVersion: v1
+      kind: DeploymentConfig
+      metadata:
+        name: rhel7-caddy
+        namespace: caddy
+        labels:
+          app: rhel7-caddy
+      spec:
+        strategy:
+          type: Rolling
+          rollingParams:
+            updatePeriodSeconds: 1
+            intervalSeconds: 1
+            timeoutSeconds: 600
+            maxUnavailable: 25%
+            maxSurge: 25%
+          resources: {}
+          activeDeadlineSeconds: 21600
+        triggers:
+          - type: ConfigChange
+          - type: ImageChange
+            imageChangeParams:
+              automatic: true
+              containerNames:
+                - rhel7-caddy
+              from:
+                kind: ImageStreamTag
+                namespace: caddy
+                name: 'rhel7-caddy:v0.10.4'
+        replicas: 1
+        test: false
+        selector:
+          app: rhel7-caddy
+          deploymentconfig: rhel7-caddy
+        template:
+          metadata:
+            labels:
+              app: rhel7-caddy
+              deploymentconfig: rhel7-caddy
+          spec:
+            volumes:
+              - name: rhel7-caddy-1
+                emptyDir: {}
+            containers:
+              - name: rhel7-caddy
+                ports:
+                  - containerPort: 2015
+                    protocol: TCP
+                resources: {}
+                volumeMounts:
+                  - name: rhel7-caddy-1
+                    mountPath: /root/.caddy
+                readinessProbe:
+                  httpGet:
+                    path: /
+                    port: 2015
+                    scheme: HTTP
+                  initialDelaySeconds: 10
+                  timeoutSeconds: 3
+                  periodSeconds: 10
+                  successThreshold: 1
+                  failureThreshold: 3
+                terminationMessagePath: /dev/termination-log
+                imagePullPolicy: Always
+            restartPolicy: Always
+            terminationGracePeriodSeconds: 30
+            dnsPolicy: ClusterFirst
+            securityContext: {}
