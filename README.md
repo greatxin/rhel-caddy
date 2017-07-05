@@ -82,7 +82,6 @@ This image builder can be deployed using the following YAML:
       kind: DeploymentConfig
       metadata:
         name: rhel7-caddy
-        namespace: caddy
         labels:
           app: rhel7-caddy
       spec:
