@@ -1,4 +1,8 @@
-:2015
+:2015 {
+  proxy / 127.0.0.1:29970 {
+    websocket
+  }
+}
 browse
 log stdout
 errors stdout
