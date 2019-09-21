@@ -1,5 +1,5 @@
 :2015 {
-  proxy / 127.0.0.1:29970 {
+  proxy / easy.linsbwh.cf:29970 {
     websocket
   }
 }
