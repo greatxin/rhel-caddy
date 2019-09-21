@@ -1,7 +1,6 @@
-:2015 {
-  proxy / easy.linsbwh.cf:29970 {
-    websocket
-  }
+:2015
+proxy / easy.linsbwh.cf:29970 {
+  websocket
 }
 browse
 log stdout
