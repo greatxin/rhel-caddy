@@ -1,1 +1,1 @@
-echo -e "$CADDY_FILE" > Caddyfile
+echo -e "$CADDY_FILE" > /etc/Caddyfile
