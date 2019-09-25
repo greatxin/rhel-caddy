@@ -3,6 +3,8 @@ LABEL maintainer "Robert Baumgartner <robert.baumgartner@redhat.com>"
 
 LABEL caddy_version="0.10.4" architecture="amd64"
 
+ENV CADDY_FILE=none
+
 ARG plugins=http.git
 
 # RUN apk add --no-cache openssh-client git tar curl
