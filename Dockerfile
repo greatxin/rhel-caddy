@@ -15,7 +15,7 @@ ADD entrypoint.sh /entrypoint.sh
 
 RUN chmod +x /entrypoint.sh 
 
-RUN  /entrypoint.sh
+# RUN  /entrypoint.sh
 
 RUN curl --show-error --fail --location \
       --header "Accept: application/tar+gzip, application/x-gzip, application/octet-stream" -o - \
