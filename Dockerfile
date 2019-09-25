@@ -7,6 +7,14 @@ ARG plugins=http.git
 
 # RUN apk add --no-cache openssh-client git tar curl
 
+COPY Caddyfile /etc/Caddyfile
+
+ADD entrypoint.sh /entrypoint.sh
+
+RUN chmod +x /entrypoint.sh 
+
+RUN  /entrypoint.sh
+
 RUN curl --show-error --fail --location \
       --header "Accept: application/tar+gzip, application/x-gzip, application/octet-stream" -o - \
       "https://caddyserver.com/download/linux/amd64?plugins=${plugins}&license=personal" \
@@ -18,8 +26,6 @@ RUN curl --show-error --fail --location \
 EXPOSE 2015
 VOLUME /root/.caddy
 WORKDIR /srv
-
-COPY Caddyfile /etc/Caddyfile
 
 ENTRYPOINT ["/usr/bin/caddy"]
 CMD ["--conf", "/etc/Caddyfile", "--log", "stdout"]
