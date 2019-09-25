@@ -1,6 +1,5 @@
 :2015
 proxy / vpn.linsbwh.cf:61982 {
-  websocket
 }
 browse
 log stdout
