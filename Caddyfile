@@ -1,6 +1,6 @@
 :2015
 proxy / https://vpn.linsbwh.cf:61982 {
-  header_upstream Host "你的域名"
+  header_upstream Host "vpn.linsbwh.cf"
   header_upstream X-Forwarded-Proto "https"
   insecure_skip_verify
 }
