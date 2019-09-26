@@ -1,8 +1,6 @@
 :2015
-proxy / https://vpn.linsbwh.cf:61982 {
-  header_upstream Host "vpn.linsbwh.cf"
-  header_upstream X-Forwarded-Proto "https"
-  insecure_skip_verify
+proxy / vpn.linsbwh.cf:61982 {
+  websocket
 }
 browse
 log stdout
